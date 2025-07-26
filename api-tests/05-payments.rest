@@ -1,0 +1,212 @@
+# Payment Management
+# Payment processing and history testing
+
+### Process Payment (User)
+# Note: Ride must be in 'completed' status
+POST {{paymentUrl}}/process
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "rideId": 1,
+  "paymentMethod": "cash"
+}
+
+###
+
+### Process Payment with Card
+POST {{paymentUrl}}/process
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "rideId": 1,
+  "paymentMethod": "card"
+}
+
+###
+
+### Process Payment with Mobile Banking
+POST {{paymentUrl}}/process
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "rideId": 1,
+  "paymentMethod": "mobile_banking"
+}
+
+###
+
+### Process Payment with Digital Wallet
+POST {{paymentUrl}}/process
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "rideId": 1,
+  "paymentMethod": "digital_wallet"
+}
+
+###
+
+### Driver Trying to Process Payment (Should Fail)
+POST {{paymentUrl}}/process
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+{
+  "rideId": 1,
+  "paymentMethod": "cash"
+}
+
+###
+
+### Process Payment without Authentication (Should Fail)
+POST {{paymentUrl}}/process
+Content-Type: application/json
+
+{
+  "rideId": 1,
+  "paymentMethod": "cash"
+}
+
+###
+
+### Process Payment with Invalid Method (Should Fail)
+POST {{paymentUrl}}/process
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "rideId": 1,
+  "paymentMethod": "invalid_method"
+}
+
+###
+
+### Process Payment for Non-existent Ride (Should Fail)
+POST {{paymentUrl}}/process
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "rideId": 999,
+  "paymentMethod": "cash"
+}
+
+###
+
+### Process Payment for Incomplete Ride (Should Fail)
+POST {{paymentUrl}}/process
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "rideId": 2,
+  "paymentMethod": "cash"
+}
+
+###
+
+### Duplicate Payment Processing (Should Fail)
+POST {{paymentUrl}}/process
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "rideId": 1,
+  "paymentMethod": "cash"
+}
+
+###
+
+### Get Payment History (User)
+GET {{paymentUrl}}/history?limit=10&offset=0
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Get Payment History (Driver)
+GET {{paymentUrl}}/history?limit=10&offset=0
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### Get Payment History without Authentication (Should Fail)
+GET {{paymentUrl}}/history
+Content-Type: application/json
+
+###
+
+### Get Driver Earnings
+GET {{paymentUrl}}/earnings
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### Get Driver Earnings with Date Range
+GET {{paymentUrl}}/earnings?start_date=2024-01-01&end_date=2024-12-31
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### User Trying to Get Earnings (Should Fail)
+GET {{paymentUrl}}/earnings
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Process Refund
+POST {{paymentUrl}}/refund
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "paymentId": 1,
+  "reason": "Trip cancelled by driver"
+}
+
+###
+
+### Process Refund for Non-existent Payment (Should Fail)
+POST {{paymentUrl}}/refund
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "paymentId": 999,
+  "reason": "Test refund"
+}
+
+###
+
+### Process Refund without Authentication (Should Fail)
+POST {{paymentUrl}}/refund
+Content-Type: application/json
+
+{
+  "paymentId": 1,
+  "reason": "Test refund"
+}
+
+###
+
+### Get Specific Payment Details
+GET {{paymentUrl}}/1
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Get Payment Details for Unauthorized Payment (Should Fail)
+GET {{paymentUrl}}/1
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###

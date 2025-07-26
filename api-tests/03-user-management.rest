@@ -1,0 +1,121 @@
+# User Management Endpoints
+# Profile management for users and drivers
+
+### Get User Profile
+GET {{userUrl}}/profile
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Get Driver Profile
+GET {{userUrl}}/profile
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### Update User Profile
+PUT {{userUrl}}/profile
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "name": "Updated Test User",
+  "phone": "+8801234567892"
+}
+
+###
+
+### Update Driver Profile
+PUT {{userUrl}}/profile
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+{
+  "name": "Updated Test Driver",
+  "phone": "+8801234567893"
+}
+
+###
+
+### Update User Profile with Invalid Data (Should Fail)
+PUT {{userUrl}}/profile
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "name": "",
+  "email": "invalid-email",
+  "phone": "123"
+}
+
+###
+
+### Get Profile without Token (Should Fail)
+GET {{userUrl}}/profile
+Content-Type: application/json
+
+###
+
+### Get Profile with Invalid Token (Should Fail)
+GET {{userUrl}}/profile
+Authorization: Bearer invalid_token_here
+Content-Type: application/json
+
+###
+
+### Update Driver Status to Available
+PUT {{userUrl}}/drivers/status
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+{
+  "status": "available"
+}
+
+###
+
+### Update Driver Status to Busy
+PUT {{userUrl}}/drivers/status
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+{
+  "status": "busy"
+}
+
+###
+
+### Update Driver Status to Offline
+PUT {{userUrl}}/drivers/status
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+{
+  "status": "offline"
+}
+
+###
+
+### User Trying to Update Driver Status (Should Fail)
+PUT {{userUrl}}/drivers/status
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "status": "available"
+}
+
+###
+
+### Update Driver Status with Invalid Status (Should Fail)
+PUT {{userUrl}}/drivers/status
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+{
+  "status": "invalid_status"
+}
+
+###

@@ -1,0 +1,210 @@
+# Complete Workflow Test
+# End-to-end ride booking and completion flow
+
+### 1. Register Test User
+# @name registerUser
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "email": "workflow-user@example.com",
+  "phone": "+8801111111111",
+  "password": "password123",
+  "name": "Workflow Test User",
+  "type": "user"
+}
+
+###
+
+### 2. Register Test Driver
+# @name registerDriver
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "email": "workflow-driver@example.com",
+  "phone": "+8801111111112",
+  "password": "password123",
+  "name": "Workflow Test Driver",
+  "type": "driver",
+  "vehicleType": "Auto Rickshaw",
+  "vehicleNumber": "DH-WF-001",
+  "licenseNumber": "WF123456"
+}
+
+###
+
+### 3. Login User
+# @name loginWorkflowUser
+POST {{authUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "workflow-user@example.com",
+  "password": "password123"
+}
+
+###
+
+### 4. Login Driver
+# @name loginWorkflowDriver
+POST {{authUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "workflow-driver@example.com",
+  "password": "password123"
+}
+
+###
+
+### 5. Set Driver Status to Available
+PUT {{userUrl}}/drivers/status
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+{
+  "status": "available"
+}
+
+###
+
+### 6. Get Available Routes
+GET {{routeUrl}}
+Content-Type: application/json
+
+###
+
+### 7. User Requests a Ride
+# @name requestWorkflowRide
+POST {{rideUrl}}/request
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "routeId": 1
+}
+
+###
+
+### 8. Check User's Active Ride
+GET {{rideUrl}}/active
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### 9. Check Driver's Available Rides
+GET {{rideUrl}}/active
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### 10. Driver Accepts the Ride
+# Note: Replace '1' with actual ride ID from step 7 response
+POST {{rideUrl}}/1/accept
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### 11. Check Ride Status After Acceptance
+GET {{rideUrl}}/1
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### 12. Driver Starts the Trip
+POST {{rideUrl}}/1/start
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### 13. Check Ride Status During Trip
+GET {{rideUrl}}/1
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### 14. Driver Completes the Trip
+POST {{rideUrl}}/1/complete
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### 15. Check Final Ride Status
+GET {{rideUrl}}/1
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### 16. User Processes Payment
+POST {{paymentUrl}}/process
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "rideId": 1,
+  "paymentMethod": "cash"
+}
+
+###
+
+### 17. Check Payment History (User)
+GET {{paymentUrl}}/history
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### 18. Check Driver Earnings
+GET {{paymentUrl}}/earnings
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### 19. Check User Notifications
+GET {{apiUrl}}/notifications
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### 20. Check Driver Notifications
+GET {{apiUrl}}/notifications
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### 21. Get User's Ride History
+GET {{rideUrl}}/history
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### 22. Get Driver's Ride History
+GET {{rideUrl}}/history
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### 23. Set Driver Status Back to Offline
+PUT {{userUrl}}/drivers/status
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+{
+  "status": "offline"
+}
+
+###

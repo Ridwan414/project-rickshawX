@@ -1,0 +1,171 @@
+# Notification Management
+# Database-stored notifications testing
+
+### Get All Notifications (User)
+GET {{apiUrl}}/notifications?limit=20&offset=0
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Get All Notifications (Driver)
+GET {{apiUrl}}/notifications?limit=20&offset=0
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### Get Unread Notifications Only
+GET {{apiUrl}}/notifications?status=unread&limit=10
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Get Read Notifications Only
+GET {{apiUrl}}/notifications?status=read&limit=10
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Get Notifications without Authentication (Should Fail)
+GET {{apiUrl}}/notifications
+Content-Type: application/json
+
+###
+
+### Get Unread Notification Count (User)
+GET {{apiUrl}}/notifications/unread-count
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Get Unread Notification Count (Driver)
+GET {{apiUrl}}/notifications/unread-count
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### Send Custom Notification (Admin Only)
+POST {{apiUrl}}/notifications/send
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "message": "This is a test notification",
+  "type": "general",
+  "title": "Test Notification"
+}
+
+###
+
+### Send Notification without Authentication (Should Fail)
+POST {{apiUrl}}/notifications/send
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "message": "This is a test notification",
+  "type": "general"
+}
+
+###
+
+### Send Notification with Invalid Data (Should Fail)
+POST {{apiUrl}}/notifications/send
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "userId": "invalid",
+  "message": "",
+  "type": "general"
+}
+
+###
+
+### Mark Specific Notification as Read
+# Note: Replace 1 with actual notification ID
+PUT {{apiUrl}}/notifications/1/read
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Mark Notification as Read - Unauthorized (Should Fail)
+PUT {{apiUrl}}/notifications/1/read
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### Mark Non-existent Notification as Read (Should Fail)
+PUT {{apiUrl}}/notifications/999/read
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Mark All Notifications as Read (User)
+PUT {{apiUrl}}/notifications/mark-all-read
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Mark All Notifications as Read (Driver)
+PUT {{apiUrl}}/notifications/mark-all-read
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### Mark All Notifications as Read without Authentication (Should Fail)
+PUT {{apiUrl}}/notifications/mark-all-read
+Content-Type: application/json
+
+###
+
+### Get Notification Service Status
+GET {{apiUrl}}/notifications/status
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Test Notification System
+POST {{apiUrl}}/notifications/test
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Test Notification System (Driver)
+POST {{apiUrl}}/notifications/test
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### Test Notification without Authentication (Should Fail)
+POST {{apiUrl}}/notifications/test
+Content-Type: application/json
+
+###
+
+### Direct Notification Service Health Check
+GET {{notificationServiceUrl}}/health
+Content-Type: application/json
+
+###
+
+### Direct Notification Service Status Check
+GET {{notificationServiceUrl}}/notifications/status
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###

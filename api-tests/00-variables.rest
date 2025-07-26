@@ -1,0 +1,45 @@
+# RickshawX API Testing Variables
+# Use these variables across all .rest files
+
+### Variables
+@baseUrl = http://localhost
+@gatewayPort = 3000
+@userServicePort = 3001
+@rideServicePort = 3002
+@paymentServicePort = 3003
+@notificationServicePort = 3004
+
+# API Gateway URLs (Primary)
+@apiUrl = {{baseUrl}}:{{gatewayPort}}
+@userUrl = {{apiUrl}}/users
+@authUrl = {{apiUrl}}/auth
+@rideUrl = {{apiUrl}}/rides
+@paymentUrl = {{apiUrl}}/payments
+@routeUrl = {{apiUrl}}/routes
+@notificationUrl = {{apiUrl}}/notifications
+
+# Direct Service URLs (For debugging)
+@userServiceUrl = {{baseUrl}}:{{userServicePort}}
+@rideServiceUrl = {{baseUrl}}:{{rideServicePort}}
+@paymentServiceUrl = {{baseUrl}}:{{paymentServicePort}}
+@notificationServiceUrl = {{baseUrl}}:{{notificationServicePort}}
+
+# Test Data
+@testUserEmail = testuser@example.com
+@testUserPhone = +8801234567890
+@testUserPassword = password123
+
+@testDriverEmail = testdriver@example.com
+@testDriverPhone = +8801234567891
+@testDriverPassword = password123
+
+# Auth Tokens (Will be set after login)
+@userToken = 
+@driverToken = 
+
+# Test IDs (Will be set during testing)
+@testUserId = 
+@testDriverId = 
+@testRideId = 
+@testPaymentId = 
+@testNotificationId = 

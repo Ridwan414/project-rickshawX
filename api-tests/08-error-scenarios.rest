@@ -1,0 +1,262 @@
+# Error Scenarios Testing
+# Test various error conditions and edge cases
+
+### Invalid JSON Request
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "test123"
+  "name": "Invalid JSON"
+}
+
+###
+
+### Missing Required Fields
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com"
+}
+
+###
+
+### Invalid Email Format
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "email": "invalid-email",
+  "phone": "+8801234567890",
+  "password": "password123",
+  "name": "Test User",
+  "type": "user"
+}
+
+###
+
+### Password Too Short
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "phone": "+8801234567890",
+  "password": "123",
+  "name": "Test User",
+  "type": "user"
+}
+
+###
+
+### Invalid User Type
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "phone": "+8801234567890",
+  "password": "password123",
+  "name": "Test User",
+  "type": "invalid_type"
+}
+
+###
+
+### Driver Registration Missing Vehicle Info
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "email": "driver@example.com",
+  "phone": "+8801234567891",
+  "password": "password123",
+  "name": "Test Driver",
+  "type": "driver"
+}
+
+###
+
+### Request Non-existent Endpoint
+GET {{apiUrl}}/non-existent-endpoint
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Malformed Authorization Header
+GET {{userUrl}}/profile
+Authorization: InvalidToken
+Content-Type: application/json
+
+###
+
+### Expired/Invalid JWT Token
+GET {{userUrl}}/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+Content-Type: application/json
+
+###
+
+### SQL Injection Attempt in Route ID
+GET {{routeUrl}}/'; DROP TABLE routes; --
+Content-Type: application/json
+
+###
+
+### XSS Attempt in Registration
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "email": "xss@example.com",
+  "phone": "+8801234567892",
+  "password": "password123",
+  "name": "<script>alert('XSS')</script>",
+  "type": "user"
+}
+
+###
+
+### Extremely Long Input Values
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "email": "verylongemailaddressthatexceedsnormallimitsandshouldbecaughtbyvalidation@example.com",
+  "phone": "+88012345678901234567890",
+  "password": "verylongpasswordthatexceedsnormallimitsandshouldbecaughtbyvalidation",
+  "name": "A very long name that should exceed normal limits and be caught by validation systems in place to prevent buffer overflow attacks",
+  "type": "user"
+}
+
+###
+
+### Negative Numbers in Pagination
+GET {{rideUrl}}/history?limit=-10&offset=-5
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Extremely Large Pagination Values
+GET {{rideUrl}}/history?limit=999999&offset=999999
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Invalid Route ID Format
+POST {{rideUrl}}/request
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "routeId": "invalid_id"
+}
+
+###
+
+### Zero or Negative Route ID
+POST {{rideUrl}}/request
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "routeId": -1
+}
+
+###
+
+### Request with Empty Body
+POST {{authUrl}}/register
+Content-Type: application/json
+
+###
+
+### Request with Non-JSON Content-Type
+POST {{authUrl}}/register
+Content-Type: text/plain
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+###
+
+### Concurrent Ride Requests (Race Condition Test)
+# Execute these quickly one after another
+POST {{rideUrl}}/request
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "routeId": 1
+}
+
+###
+
+POST {{rideUrl}}/request
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "routeId": 2
+}
+
+###
+
+### Driver Accepting Already Accepted Ride
+POST {{rideUrl}}/1/accept
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### User Trying to Accept Own Ride
+POST {{rideUrl}}/1/accept
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Process Payment for Non-completed Ride
+POST {{paymentUrl}}/process
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "rideId": 1,
+  "paymentMethod": "cash"
+}
+
+###
+
+### Process Payment Twice (Double Payment)
+POST {{paymentUrl}}/process
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "rideId": 1,
+  "paymentMethod": "cash"
+}
+
+###
+
+### Request with Very Large Payload
+POST {{apiUrl}}/notifications/send
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+  "type": "general",
+  "title": "Very Long Message Test"
+}
+
+###

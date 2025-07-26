@@ -1,0 +1,110 @@
+# Authentication Endpoints
+# User and Driver Registration/Login
+
+### Register New User
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "email": "{{testUserEmail}}",
+  "phone": "{{testUserPhone}}",
+  "password": "{{testUserPassword}}",
+  "name": "Test User",
+  "type": "user"
+}
+
+###
+
+### Register New Driver
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "email": "{{testDriverEmail}}",
+  "phone": "{{testDriverPhone}}",
+  "password": "{{testDriverPassword}}",
+  "name": "Test Driver",
+  "type": "driver",
+  "vehicleType": "Rickshaw",
+  "vehicleNumber": "DH-TEST-001",
+  "licenseNumber": "TEST123456"
+}
+
+###
+
+### Login User
+# @name loginUser
+POST {{authUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "{{testUserEmail}}",
+  "password": "{{testUserPassword}}"
+}
+
+###
+
+### Login Driver
+# @name loginDriver
+POST {{authUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "{{testDriverEmail}}",
+  "password": "{{testDriverPassword}}"
+}
+
+###
+
+### Login with Invalid Credentials
+POST {{authUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "invalid@example.com",
+  "password": "wrongpassword"
+}
+
+###
+
+### Register User with Existing Email (Should Fail)
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "email": "{{testUserEmail}}",
+  "phone": "+8801234567899",
+  "password": "{{testUserPassword}}",
+  "name": "Duplicate User",
+  "type": "user"
+}
+
+###
+
+### Register User with Invalid Data (Should Fail)
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "email": "invalid-email",
+  "phone": "123",
+  "password": "123",
+  "name": "",
+  "type": "invalid"
+}
+
+###
+
+### Logout User
+POST {{authUrl}}/logout
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Logout Driver
+POST {{authUrl}}/logout
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###

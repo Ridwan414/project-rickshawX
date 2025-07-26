@@ -1,0 +1,188 @@
+# Routes and Rides Management
+# Route information and ride lifecycle testing
+
+### Get All Available Routes
+GET {{routeUrl}}
+Content-Type: application/json
+
+###
+
+### Get Available Locations
+GET {{routeUrl}}/locations
+Content-Type: application/json
+
+###
+
+### Get Routes from Specific Location
+GET {{routeUrl}}/from/Dhanmondi
+Content-Type: application/json
+
+###
+
+### Get Specific Route by ID
+GET {{routeUrl}}/1
+Content-Type: application/json
+
+###
+
+### Request a Ride (User)
+# @name requestRide
+POST {{rideUrl}}/request
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "routeId": 1
+}
+
+###
+
+### Request Ride without Authentication (Should Fail)
+POST {{rideUrl}}/request
+Content-Type: application/json
+
+{
+  "routeId": 1
+}
+
+###
+
+### Request Ride with Invalid Route ID (Should Fail)
+POST {{rideUrl}}/request
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "routeId": 999
+}
+
+###
+
+### Driver Trying to Request Ride (Should Fail)
+POST {{rideUrl}}/request
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+{
+  "routeId": 1
+}
+
+###
+
+### Get Active Ride (User)
+GET {{rideUrl}}/active
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Get Active Ride (Driver)
+GET {{rideUrl}}/active
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### Accept Ride (Driver)
+# Note: Replace {rideId} with actual ride ID from request response
+POST {{rideUrl}}/1/accept
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### User Trying to Accept Ride (Should Fail)
+POST {{rideUrl}}/1/accept
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Accept Non-existent Ride (Should Fail)
+POST {{rideUrl}}/999/accept
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### Start Trip (Driver)
+# Note: Ride must be in 'accepted' status
+POST {{rideUrl}}/1/start
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### User Trying to Start Trip (Should Fail)
+POST {{rideUrl}}/1/start
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Start Trip with Invalid Status (Should Fail)
+POST {{rideUrl}}/1/start
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### Complete Trip (Driver)
+# Note: Ride must be in 'in_progress' status
+POST {{rideUrl}}/1/complete
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### User Trying to Complete Trip (Should Fail)
+POST {{rideUrl}}/1/complete
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Get Ride History (User)
+GET {{rideUrl}}/history?limit=10&offset=0
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Get Ride History (Driver)
+GET {{rideUrl}}/history?limit=10&offset=0
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### Get Ride History without Authentication (Should Fail)
+GET {{rideUrl}}/history
+Content-Type: application/json
+
+###
+
+### Get Specific Ride Details
+GET {{rideUrl}}/1
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+###
+
+### Get Ride Details as Unauthorized User (Should Fail)
+GET {{rideUrl}}/1
+Authorization: Bearer {{driverToken}}
+Content-Type: application/json
+
+###
+
+### Request Multiple Rides (Should Fail - User can only have one active ride)
+POST {{rideUrl}}/request
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "routeId": 2
+}
+
+###

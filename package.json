@@ -1,0 +1,31 @@
+{
+  "name": "rickshawx",
+  "version": "1.0.0",
+  "description": "RickshawX - Ride-sharing platform with microservices architecture",
+  "main": "index.js",
+  "scripts": {
+    "dev:gateway": "cd services/api-gateway && npm run dev",
+    "dev:user-service": "cd services/user-service && npm run dev",
+    "dev:ride-service": "cd services/ride-service && npm run dev",
+    "dev:payment-service": "cd services/payment-service && npm run dev",
+    "dev:notification-service": "cd services/notification-service && npm run dev",
+    "install:all": "npm install && cd services/api-gateway && npm install && cd ../user-service && npm install && cd ../ride-service && npm install && cd ../payment-service && npm install && cd ../notification-service && npm install",
+    "migrate": "cd database && node migrations/run-migrations.js",
+    "test": "jest",
+    "test:integration": "jest --config jest.integration.config.js",
+    "build": "npm run build:gateway && npm run build:services",
+    "build:gateway": "cd services/api-gateway && npm run build",
+    "build:services": "cd services/user-service && npm run build && cd ../ride-service && npm run build && cd ../payment-service && npm run build && cd ../notification-service && npm run build"
+  },
+  "keywords": ["ride-sharing", "microservices", "nodejs", "postgresql", "redis"],
+  "author": "RickshawX Team",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}

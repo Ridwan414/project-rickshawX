@@ -1,0 +1,178 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: rickshawx-postgres
+    environment:
+      POSTGRES_DB: rickshawx
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./database/seeds/routes.sql:/docker-entrypoint-initdb.d/02-routes.sql
+    networks:
+      - rickshawx-network
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: rickshawx-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - rickshawx-network
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+      dockerfile: Dockerfile
+    container_name: rickshawx-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/rickshawx
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=dev-secret-key-change-in-production
+      - USER_SERVICE_URL=http://user-service:3001
+      - RIDE_SERVICE_URL=http://ride-service:3002
+      - PAYMENT_SERVICE_URL=http://payment-service:3003
+      - NOTIFICATION_SERVICE_URL=http://notification-service:3004
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - rickshawx-network
+    volumes:
+      - ./services/api-gateway:/app
+      - /app/node_modules
+
+  # User Service
+  user-service:
+    build:
+      context: ./services/user-service
+      dockerfile: Dockerfile
+    container_name: rickshawx-user-service
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/rickshawx
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=dev-secret-key-change-in-production
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - rickshawx-network
+    volumes:
+      - ./services/user-service:/app
+      - /app/node_modules
+
+  # Ride Service
+  ride-service:
+    build:
+      context: ./services/ride-service
+      dockerfile: Dockerfile
+    container_name: rickshawx-ride-service
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/rickshawx
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=dev-secret-key-change-in-production
+      - USER_SERVICE_URL=http://user-service:3001
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - rickshawx-network
+    volumes:
+      - ./services/ride-service:/app
+      - /app/node_modules
+
+  # Payment Service
+  payment-service:
+    build:
+      context: ./services/payment-service
+      dockerfile: Dockerfile
+    container_name: rickshawx-payment-service
+    ports:
+      - "3003:3003"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/rickshawx
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=dev-secret-key-change-in-production
+      - USER_SERVICE_URL=http://user-service:3001
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - rickshawx-network
+    volumes:
+      - ./services/payment-service:/app
+      - /app/node_modules
+
+  # Notification Service
+  notification-service:
+    build:
+      context: ./services/notification-service
+      dockerfile: Dockerfile
+    container_name: rickshawx-notification-service
+    ports:
+      - "3004:3004"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/rickshawx
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=dev-secret-key-change-in-production
+      - USER_SERVICE_URL=http://user-service:3001
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - rickshawx-network
+    volumes:
+      - ./services/notification-service:/app
+      - /app/node_modules
+
+  # Nginx Load Balancer
+  nginx:
+    image: nginx:alpine
+    container_name: rickshawx-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - api-gateway
+    networks:
+      - rickshawx-network
+
+  adminer:
+    image: adminer
+    container_name: rickshawx-adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - rickshawx-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  rickshawx-network:
+    driver: bridge

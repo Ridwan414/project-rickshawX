@@ -1,0 +1,32 @@
+# Health Check Endpoints
+# Test all services are running
+
+### API Gateway Health Check
+GET {{apiUrl}}/health
+Content-Type: application/json
+
+###
+
+### User Service Health Check (Direct)
+GET {{userServiceUrl}}/health
+Content-Type: application/json
+
+###
+
+### Ride Service Health Check (Direct)
+GET {{rideServiceUrl}}/health
+Content-Type: application/json
+
+###
+
+### Payment Service Health Check (Direct)
+GET {{paymentServiceUrl}}/health
+Content-Type: application/json
+
+###
+
+### Notification Service Health Check (Direct)
+GET {{notificationServiceUrl}}/health
+Content-Type: application/json
+
+###
