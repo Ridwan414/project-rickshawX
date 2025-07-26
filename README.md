@@ -12,6 +12,7 @@ A comprehensive ride-sharing platform built with microservices architecture usin
 - **Microservices Architecture**: Scalable and maintainable service-oriented design
 
 ## 🏗️ Architecture
+![Architecture Diagram](images/image.png)
 
 ### Services
 1. **API Gateway** (Port 3000) - Request routing and authentication
@@ -25,6 +26,9 @@ A comprehensive ride-sharing platform built with microservices architecture usin
 - **Redis** - Caching, sessions, and pub/sub messaging
 - **Docker** - Containerization
 - **Nginx** - Load balancing
+
+### APi workflow diagram
+/api-workflow.md
 
 ## 📋 Prerequisites
 

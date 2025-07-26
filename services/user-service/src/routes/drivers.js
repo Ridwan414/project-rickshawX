@@ -72,6 +72,25 @@ router.get('/available', authMiddleware, async (req, res) => {
     }
 });
 
+// Internal service endpoint for getting available drivers (no auth required)
+router.get('/internal/available', async (req, res) => {
+    try {
+        const availableDrivers = await Driver.getAvailableDrivers();
+
+        res.status(200).json({
+            drivers: availableDrivers,
+            count: availableDrivers.length
+        });
+
+    } catch (error) {
+        console.error('Get available drivers error:', error);
+        res.status(500).json({ 
+            error: 'Failed to get available drivers',
+            message: error.message 
+        });
+    }
+});
+
 router.put('/profile', authMiddleware, async (req, res) => {
     try {
         if (req.user.type !== 'driver') {

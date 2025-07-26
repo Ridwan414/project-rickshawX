@@ -17,15 +17,24 @@
     "build:gateway": "cd services/api-gateway && npm run build",
     "build:services": "cd services/user-service && npm run build && cd ../ride-service && npm run build && cd ../payment-service && npm run build && cd ../notification-service && npm run build"
   },
-  "keywords": ["ride-sharing", "microservices", "nodejs", "postgresql", "redis"],
+  "keywords": [
+    "ride-sharing",
+    "microservices",
+    "nodejs",
+    "postgresql",
+    "redis"
+  ],
   "author": "RickshawX Team",
   "license": "MIT",
   "devDependencies": {
     "jest": "^29.7.0",
-    "supertest": "^6.3.3",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.3"
   },
   "dependencies": {
-    "dotenv": "^16.3.1"
+    "axios": "^1.11.0",
+    "dotenv": "^16.3.1",
+    "react-router-dom": "^7.7.1",
+    "zustand": "^5.0.6"
   }
 }

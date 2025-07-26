@@ -1,7 +1,7 @@
 graph TB
     %% Client Layer
     subgraph "Client Layer"
-        WEB[Next.js Web App<br/>TypeScript]
+        WEB[React.js Web App<br/>TypeScript]
         MOBILE[Mobile App<br/>React Native/Flutter]
     end
 

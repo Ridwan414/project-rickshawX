@@ -1,12 +1,12 @@
 # RickshawX Project - Development Instructions
 
 ## Overview
-RickshawX is a ride-sharing platform with a microservices architecture built using Node.js, Next.js, PostgreSQL, and Redis. The system supports both web and mobile clients with real-time communication via WebSockets.
+RickshawX is a ride-sharing platform with a microservices architecture built using Node.js, React.js, PostgreSQL, and Redis. The system supports both web and mobile clients with real-time communication via WebSockets.
 
 ## System Architecture
 
 ### Technology Stack
-- **Frontend**: Next.js (Web)
+- **Frontend**: React.js (Web)
 - **Backend**: Node.js Express (API Gateway + Microservices)
 - **Database**: PostgreSQL (Primary), Redis (Cache & Sessions)
 - **Message Broker**: Redis Pub/Sub
@@ -100,7 +100,7 @@ RickshawX is a ride-sharing platform with a microservices architecture built usi
 
 ### Phase 3: Frontend Development
 
-#### Next.js Web Application
+#### React.js Web Application
 **User Interface:**
 - Registration/login forms
 - Route selection with pricing

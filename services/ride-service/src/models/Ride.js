@@ -121,7 +121,7 @@ class Ride {
     static async getAvailableDrivers() {
         try {
             const response = await axios.get(
-                `${process.env.USER_SERVICE_URL || 'http://localhost:3001'}/drivers/available`,
+                `${process.env.USER_SERVICE_URL || 'http://localhost:3001'}/drivers/internal/available`,
                 { timeout: 5000 }
             );
             return response.data.drivers;

@@ -1,3 +1,48 @@
+# RickshawX API Testing Variables
+# Use these variables across all .rest files
+
+### Variables
+@baseUrl = http://localhost
+@gatewayPort = 3000
+@userServicePort = 3001
+@rideServicePort = 3002
+@paymentServicePort = 3003
+@notificationServicePort = 3004
+
+# API Gateway URLs (Primary)
+@apiUrl = {{baseUrl}}:{{gatewayPort}}
+@userUrl = {{apiUrl}}/users
+@authUrl = {{apiUrl}}/auth
+@rideUrl = {{apiUrl}}/rides
+@paymentUrl = {{apiUrl}}/payments
+@routeUrl = {{apiUrl}}/routes
+@notificationUrl = {{apiUrl}}/notifications
+
+# Direct Service URLs (For debugging)
+@userServiceUrl = {{baseUrl}}:{{userServicePort}}
+@rideServiceUrl = {{baseUrl}}:{{rideServicePort}}
+@paymentServiceUrl = {{baseUrl}}:{{paymentServicePort}}
+@notificationServiceUrl = {{baseUrl}}:{{notificationServicePort}}
+
+# Test Data
+@testUserEmail = user@example.com
+@testUserPhone = +8801234567890
+@testUserPassword = password
+
+@testDriverEmail = driver@example.com
+@testDriverPhone = +8801234567891
+@testDriverPassword = password
+
+# Auth Tokens (Will be set after login)
+@userToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInR5cGUiOiJ1c2VyIiwiaWF0IjoxNzUzNTE5MzAzLCJleHAiOjE3NTM2MDU3MDN9.ukgp9eZzI6uyTduo8g8qJqQBaJQUyyPMX2MQt0QurA8
+@driverToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInR5cGUiOiJkcml2ZXIiLCJpYXQiOjE3NTM1MTkzNjQsImV4cCI6MTc1MzYwNTc2NH0.v2RznTmWDzC2_5n7UsUj7Fi8C7BjuEIcYLsV2w0X4rM
+
+# Test IDs (Will be set during testing)
+@testUserId = 3
+@testDriverId = 4
+@testRideId = 
+@testPaymentId = 
+@testNotificationId = 
 # Authentication Endpoints
 # User and Driver Registration/Login
 

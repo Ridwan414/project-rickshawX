@@ -1,6 +1,6 @@
 sequenceDiagram
-    participant U as User (Next.js)
-    participant D as Driver (Next.js)
+    participant U as User (React.js)
+    participant D as Driver (React.js)
     participant G as API Gateway
     participant US as User Service
     participant RS as Ride Service
